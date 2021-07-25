@@ -8,45 +8,12 @@ import (
 	"image"
 	"image/jpeg"
 	"io"
-	"io/ioutil"
 	"log"
-	"math/rand"
 	"net/http"
 	"strconv"
 
 	service "github.com/dovudwkt/playground/server/services"
 )
-
-func UserHandler(w http.ResponseWriter, req *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
-	defer req.Body.Close()
-	body, err := ioutil.ReadAll(req.Body)
-	if err != nil {
-		fmt.Println("error reading body: ", err.Error())
-	}
-
-	var u User
-
-	err = json.Unmarshal(body, &u)
-	if err != nil {
-		fmt.Println("unmarshal body: ", err.Error())
-	}
-
-	fmt.Printf("user object: %+v", u)
-
-	u.ID = rand.Int()
-
-	json.NewEncoder(w).Encode(u)
-}
-
-type User struct {
-	ID   int    `json:"id,omitempty"`
-	Name string `json:"name"`
-	Age  int    `json:"age"`
-}
-
-// ----------------------------------------
 
 type ImageHTTPHandler struct {
 	Service service.Service

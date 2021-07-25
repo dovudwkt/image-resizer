@@ -18,7 +18,6 @@ func main() {
 	svc := service.New(service.Options{})
 
 	// routes
-	http.HandleFunc("/user", handler.UserHandler)
 	http.Handle("/images/resize", handler.ImageHTTPHandler{
 		Service: svc,
 	})
