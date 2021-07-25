@@ -46,15 +46,16 @@ type ResizeConfig struct {
 	Interp resize.InterpolationFunction
 }
 
+// ResizeImage resized the image by provided config values.
+// It returns the resized image.
 func (svc *service) ResizeImage(img *image.Image, cfg ResizeConfig) (*image.Image, error) {
 	resizedImg := resize.Resize(cfg.W, cfg.H, *img, cfg.Interp)
-
 	log.Println("Image resized successfully")
 
 	return &resizedImg, nil
 }
 
-// ---------------------------
+// ------------------------------------------------------
 
 type ResizeInFileConfig struct {
 	In, Out string
