@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"image"
 	"image/jpeg"
 	"io"
@@ -12,7 +11,7 @@ import (
 	"net/http"
 	"strconv"
 
-	service "github.com/dovudwkt/playground/server/services"
+	service "github.com/dovudwkt/image_resizer/service"
 )
 
 // ImageHTTPHandler accepts an image and query parameters to resize image.
@@ -47,7 +46,7 @@ func (h ImageHTTPHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 	// call a service to resize the image providing configs
 	resizedImg, err := h.Service.ResizeImage(&img, service.ResizeConfig{
-		W: uint(height), H: uint(width), Interp: service.NearestNeighbor,
+		W: uint(width), H: uint(height), Interp: service.NearestNeighbor,
 	})
 	if err != nil {
 		json.NewEncoder(w).Encode(err)
@@ -77,29 +76,4 @@ func writeImage(w http.ResponseWriter, img *image.Image) error {
 	}
 
 	return nil
-}
-
-// -------------------------------------------------
-
-type ImageFromURLHTTPHandler struct {
-	Service service.Service
-}
-
-func (h ImageFromURLHTTPHandler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
-	client := http.Client{}
-
-	reqImg, err := client.Get("https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Ym9va3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80)")
-	if err != nil {
-		fmt.Fprintf(res, "Error %d", err)
-		return
-	}
-
-	buffer := make([]byte, reqImg.ContentLength)
-	io.ReadFull(reqImg.Body, buffer)
-
-	res.Header().Set("Content-Length", fmt.Sprint(reqImg.ContentLength))
-	res.Header().Set("Content-Type", reqImg.Header.Get("Content-Type"))
-
-	res.Write(buffer)
-	req.Body.Close()
 }

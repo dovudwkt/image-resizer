@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	handler "github.com/dovudwkt/playground/server/handlers"
-	service "github.com/dovudwkt/playground/server/services"
+	handler "github.com/dovudwkt/image_resizer/handler"
+	service "github.com/dovudwkt/image_resizer/service"
 )
 
 func main() {
@@ -19,9 +19,6 @@ func main() {
 
 	// routes
 	http.Handle("/images/resize", handler.ImageHTTPHandler{
-		Service: svc,
-	})
-	http.Handle("/cutter", handler.ImageFromURLHTTPHandler{
 		Service: svc,
 	})
 
