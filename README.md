@@ -1,7 +1,7 @@
 # image-resizer
 
 ## Installing dependencies: 
-go get github.com/nfnt/resize
+`go get github.com/nfnt/resize`
 
 ## Starting server
 From the project directory, run `go run server.go` to start the server. By default the port is set to `3001`.
